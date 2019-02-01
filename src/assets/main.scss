@@ -1,0 +1,134 @@
+/**
+ * This injects Tailwind's base styles, which is a combination of
+ * Normalize.css and some additional base styles.
+ *
+ * You can see the styles here:
+ * https://github.com/tailwindcss/tailwindcss/blob/master/css/preflight.css
+ *
+ * If using `postcss-import`, use this import instead:
+ *
+ * 
+ */
+@tailwind preflight;
+
+/**
+  * This injects any component classes registered by plugins.
+  *
+  * If using `postcss-import`, use this import instead:
+  *
+  *
+  */
+@tailwind components;
+
+/**
+  * Here you would add any of your custom component classes; stuff that you'd
+  * want loaded *before* the utilities so that the utilities could still
+  * override them.
+  *
+  * Example:
+  *
+  * .btn { ... }
+  * .form-input { ... }
+  *
+  * Or if using a preprocessor or `postcss-import`:
+  *
+  * @import "components/buttons";
+  * @import "components/forms";
+  */
+
+/**
+  * This injects all of Tailwind's utility classes, generated based on your
+  * config file.
+  *
+  * If using `postcss-import`, use this import instead:
+  *
+  * 
+  */
+@tailwind utilities;
+
+/**
+  * Here you would add any custom utilities you need that don't come out of the
+  * box with Tailwind.
+  *
+  * Example :
+  *
+  * .bg-pattern-graph-paper { ... }
+  * .skew-45 { ... }
+  *
+  * Or if using a preprocessor or `postcss-import`:
+  *
+  * @import "utilities/background-patterns";
+  * @import "utilities/skew-transforms";
+  */
+
+@mixin strike-center {
+  text-decoration: line-through;
+}
+
+body {
+  height: 100vh;
+  font-size: 14px;
+  overflow: auto;
+  @apply bg-black;
+}
+
+.input-text {
+  @apply w-full p-1 bg-grey rounded-sm;
+
+  &__input {
+    @apply w-full bg-grey;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.todo-item {
+  @apply text-white w-full flex items-start pt-4;
+
+  &--completed {
+    @apply text-grey-darker;
+  }
+}
+
+.todo-checkbox {
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  border-radius: 50%;
+  position: relative;
+  @apply border border-grey-darkest;
+
+  &--completed {
+    &::before {
+      position: absolute;
+      content: '';
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      @apply border border-grey-darker;
+      @apply bg-grey-darker;
+    }
+  }
+}
+
+.todo-title {
+  flex: 1;
+  margin-left: 0.5rem;
+  padding: 0 5px 1rem 5px;
+  overflow: hidden;
+  transition: all 250ms ease-in;
+  @apply border-b border-grey-darkest;
+
+  &__text {
+    line-height: 1.5;
+
+    &--completed {
+      @include strike-center();
+      @apply text-grey-darker;
+    }
+  }
+}
