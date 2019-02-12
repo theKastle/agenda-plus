@@ -1,0 +1,190 @@
+{
+  "latestGroupId": 30,
+  "latestTodoId": 17,
+  "todoIdsInGroup": {
+    "1": [14, 12, 11, 10, 9, 8, 6, 1],
+    "2": [],
+    "3": [2],
+    "4": [3],
+    "5": [4],
+    "6": [],
+    "7": [],
+    "8": [],
+    "9": [],
+    "10": [],
+    "11": [],
+    "12": [],
+    "13": [],
+    "14": [],
+    "15": [],
+    "16": [],
+    "17": [],
+    "18": [],
+    "19": [],
+    "20": [],
+    "21": [],
+    "22": [],
+    "23": [13, 7],
+    "24": [],
+    "25": [],
+    "26": [],
+    "27": [15],
+    "28": [17, 16],
+    "29": [],
+    "30": []
+  },
+  "todoById": {
+    "1": {
+      "id": 1,
+      "groupKey": 1,
+      "title": "Add markdown",
+      "completed": false,
+      "detail": ""
+    },
+    "2": {
+      "id": 2,
+      "groupKey": 3,
+      "title": "itm in g3",
+      "completed": false,
+      "detail": ""
+    },
+    "3": {
+      "id": 3,
+      "groupKey": 4,
+      "title": "g4",
+      "completed": false,
+      "detail": ""
+    },
+    "4": {
+      "id": 4,
+      "groupKey": 5,
+      "title": "g5",
+      "completed": false,
+      "detail": ""
+    },
+    "5": {
+      "id": 5,
+      "groupKey": 1,
+      "title": "",
+      "completed": false,
+      "detail": ""
+    },
+    "6": {
+      "id": 6,
+      "groupKey": "1",
+      "title": "Testing and fix bugs",
+      "completed": false,
+      "detail": ""
+    },
+    "7": {
+      "id": 7,
+      "groupKey": 23,
+      "title": "Save up money to open a coffee shop",
+      "completed": false,
+      "detail": ""
+    },
+    "8": {
+      "id": 8,
+      "groupKey": "1",
+      "title": "[Features] Resize panels",
+      "completed": false,
+      "detail": ""
+    },
+    "9": {
+      "id": 9,
+      "groupKey": "1",
+      "title": "[Features] Toggle Todo Panel",
+      "completed": false,
+      "detail": ""
+    },
+    "10": {
+      "id": 10,
+      "groupKey": "1",
+      "title": "How should app behave responsively?",
+      "completed": false,
+      "detail": ""
+    },
+    "11": {
+      "id": 11,
+      "groupKey": "1",
+      "title": "[Features] Add color tag to note",
+      "completed": false,
+      "detail": ""
+    },
+    "12": {
+      "id": 12,
+      "groupKey": "1",
+      "title": "[Feature] Open new tab from current todo note",
+      "completed": false,
+      "detail": ""
+    },
+    "13": {
+      "id": 13,
+      "groupKey": 23,
+      "title": "How much money do we have to save?",
+      "completed": false,
+      "detail": ""
+    },
+    "14": {
+      "id": 14,
+      "groupKey": "1",
+      "title": "Implement close, maximize, mininize button with correct colors",
+      "completed": false,
+      "detail": ""
+    },
+    "15": {
+      "id": 15,
+      "groupKey": 27,
+      "title": "Find Design",
+      "completed": false,
+      "detail": ""
+    },
+    "16": {
+      "id": 16,
+      "groupKey": 28,
+      "title": "Slider",
+      "completed": false,
+      "detail": ""
+    },
+    "17": {
+      "id": 17,
+      "groupKey": 28,
+      "title": "Datepicker",
+      "completed": false,
+      "detail": ""
+    }
+  },
+  "groupIds": [1, 23, 27, 28],
+  "groupById": {
+    "1": { "name": "Note Todo App Plan", "id": "1" },
+    "2": { "id": 2 },
+    "3": { "id": 3 },
+    "4": { "id": 4 },
+    "5": { "id": 5, "name": "Group 5" },
+    "6": { "id": 6 },
+    "7": { "id": 7, "name": "Group 7" },
+    "8": { "id": 8 },
+    "9": { "id": 9 },
+    "10": { "id": 10 },
+    "11": { "id": 11, "name": "Todo" },
+    "12": { "id": 12 },
+    "13": { "id": 13 },
+    "14": { "id": 14, "name": "" },
+    "15": { "id": 15, "name": "Group 16" },
+    "16": { "id": 16 },
+    "17": { "id": 17 },
+    "18": { "id": 18 },
+    "19": { "id": 19 },
+    "20": { "id": 20 },
+    "21": { "id": 21 },
+    "22": { "id": 22 },
+    "23": { "id": 23, "name": "Long term plan" },
+    "24": { "id": 24 },
+    "25": { "id": 25 },
+    "26": { "id": 26 },
+    "27": { "id": 27, "name": "Portfolio Project" },
+    "28": { "id": 28, "name": "From crash ideas" },
+    "29": { "id": 29 },
+    "30": { "id": 30 }
+  }
+}

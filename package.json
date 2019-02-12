@@ -11,14 +11,21 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
-    "vue": "^2.5.21"
+    "highlight.js": "^9.14.2",
+    "markdown-it": "^8.4.2",
+    "marked": "^0.6.0",
+    "vue": "^2.5.21",
+    "vue-codemirror": "^4.0.6",
+    "vue-markdown": "^2.2.4",
+    "vue-smooth-dnd": "^0.2.8",
+    "vuedraggable": "^2.17.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
     "@vue/cli-service": "^3.3.0",
     "babel-eslint": "^10.0.1",
-    "electron": "^3.0.0",
+    "electron": "^4.0.4",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.11.0",

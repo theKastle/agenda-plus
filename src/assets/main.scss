@@ -73,10 +73,10 @@ body {
 }
 
 .input-text {
-  @apply w-full p-1 bg-grey rounded-sm;
+  @apply w-full p-2 bg-grey-darker rounded-sm;
 
   &__input {
-    @apply w-full bg-grey;
+    @apply w-full bg-grey-darker text-white;
 
     &:focus {
       outline: none;
@@ -85,10 +85,16 @@ body {
 }
 
 .todo-item {
-  @apply text-white w-full flex items-start pt-4;
+  @apply text-white w-full flex items-center pt-4 flex-wrap max-w-full;
 
   &--completed {
     @apply text-grey-darker;
+  }
+
+  &:hover {
+    .trash {
+      display: block;
+    }
   }
 }
 
@@ -97,12 +103,12 @@ body {
   min-height: 1.25rem;
   border-radius: 50%;
   position: relative;
-  @apply border border-grey-darkest;
+  @apply border border-grey-darkest mr-2;
 
   &--completed {
     &::before {
       position: absolute;
-      content: '';
+      content: "";
       width: 1rem;
       height: 1rem;
       border-radius: 50%;
@@ -115,13 +121,13 @@ body {
   }
 }
 
+.trash {
+  display: none;
+}
+
 .todo-title {
-  flex: 1;
-  margin-left: 0.5rem;
-  padding: 0 5px 1rem 5px;
   overflow: hidden;
-  transition: all 250ms ease-in;
-  @apply border-b border-grey-darkest;
+  @apply flex-grow flex-no-shrink max-w-full py-1 px-3 justify-between;
 
   &__text {
     line-height: 1.5;
@@ -130,5 +136,124 @@ body {
       @include strike-center();
       @apply text-grey-darker;
     }
+  }
+}
+
+.CodeMirror-hints {
+  max-height: 20em;
+  @apply bg-blue-darkest absolute z-10 overflow-hidden list-reset p-0 font-mono text-sm overflow-y-auto .rounded-none border-0;
+}
+
+.CodeMirror-hint {
+  @apply m-0 leading-normal whitespace-pre cursor-pointer text-grey-darker .rounded-none;
+}
+
+li.CodeMirror-hint-active {
+  @apply text-grey-darker bg-blue-lighter;
+}
+
+::-webkit-scrollbar {
+  background-color: #2b2b2b;
+  border-left: 1px solid #3e3e3e;
+  width: 0.65rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6b6b6b;
+  border-radius: 10px;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.tab-plus {
+  transition: transform 50ms ease-out;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.tab {
+  @apply relative;
+
+  &--active {
+    @apply bg-grey-darkest border-r-0;
+
+    &::after {
+      content: "";
+      width: 100%;
+      height: 1px;
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      @apply z-50 bg-green-dark;
+    }
+  }
+}
+
+.tab-expand,
+.tab-expand > .tab__text {
+  transform-origin: left top;
+  animation-fill-mode: both;
+}
+
+.tab-expand {
+  overflow: hidden;
+  will-change: transform;
+  contain: content;
+  animation-name: tab-expand;
+  animation-duration: 100ms;
+  animation-timing-function: step-end;
+}
+
+.tab-expand > .tab__text {
+  will-change: transform;
+  contain: content;
+  animation-name: tab-expandInverse;
+  animation-duration: 100ms;
+  animation-timing-function: step-end;
+}
+
+@keyframes tab-expand {
+  0% {
+    transform: scaleX(0);
+  }
+  20% {
+    transform: scaleX(0.30837);
+  }
+  40% {
+    transform: scaleX(0.57088);
+  }
+  60% {
+    transform: scaleX(0.78514);
+  }
+  80% {
+    transform: scaleX(0.93772);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes tab-expandInverse {
+  0% {
+    transform: scaleX(1000);
+  }
+  20% {
+    transform: scaleX(3.24286);
+  }
+  40% {
+    transform: scaleX(1.75168);
+  }
+  60% {
+    transform: scaleX(1.27366);
+  }
+  80% {
+    transform: scaleX(1.06642);
+  }
+  100% {
+    transform: scaleX(1);
   }
 }
