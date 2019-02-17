@@ -3,9 +3,7 @@ import reducer from "./dataReducer.js";
 const STORAGE_KEY = "todos-electron-vue";
 
 const initialDb = {
-  latestGroupId: 1,
-  latestTodoId: 0,
-  todoIdsInGroup: {},
+  todoIdsInGroup: { "1": [] },
   todoById: {},
   groupIds: [1],
   groupById: { "1": { name: "default", id: "1" } }
@@ -14,7 +12,8 @@ const initialDb = {
 export const todoStorage = {
   appState: {},
   load: function() {
-    this.appState.db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || initialDb;
+    this.appState.db =
+      JSON.parse(localStorage.getItem(STORAGE_KEY)) || initialDb;
   },
   save: function() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.appState.db));
@@ -35,8 +34,6 @@ export const todoStorage = {
   },
   removeTodo: function(groupId, todoId) {
     this.appState.db = reducer.todoRemoved(this.appState.db, groupId, todoId);
-    console.log(this.appState.db.todoIdsInGroup);
-
   },
   removeGroup: function(groupId) {
     this.appState.db = reducer.groupRemoved(this.appState.db, groupId);

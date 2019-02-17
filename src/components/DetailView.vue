@@ -1,25 +1,27 @@
 <template>
-  <div>
-    <div class="todo-title">
+  <div class="flex flex-grow items-stretch relative">
+    <div class="absolute tags-list">
       <div
-        class="todo-title__text leading-none"
-        :class="{'todo-title__text--completed': completed, 'font-bold': isFocused}"
-        v-html="markedTitle"
-      />
+        v-for="tag in sortedTags"
+        :key="tag.key"
+        :class="`tag tag--${tag.key}`"
+        @click="tagSelected(tag)"
+      ></div>
     </div>
     <codemirror
       ref="myCm"
-      class="w-full"
-      v-if="editDetail && todo.viewDetail"
-      v-model="detail"
+      class="w-full flex-grow"
+      v-model="editableMarkdown"
       :options="cmOptions"
       @inputRead="triggerHint"
+      @blur="onEditBlur"
+      v-if="editDetail"
     ></codemirror>
     <div
       v-html="compiledDetail"
-      @click.stop="openEdit"
-      v-if="!editDetail && detail.length && todo.viewDetail"
-      class="text-white px-20 py-4 overflow-hidden leading-normal bg-black w-full"
+      @dblclick.stop="openEdit"
+      v-if="!editDetail"
+      class="px-20 py-4 overflow-auto leading-normal avenir-white-theme bg-white w-full"
     ></div>
   </div>
 </template>
@@ -28,18 +30,19 @@
 <style>
 @import "~highlight.js/styles/atom-one-dark.css";
 @import "~codemirror/lib/codemirror.css";
-@import "~codemirror/theme/material.css";
+@import "~codemirror/theme/neat.css";
 @import "~codemirror/addon/hint/show-hint.css";
 </style>
 
 <script>
 /* eslint-disable */
 import hljs from "highlight.js";
-import markdownIt from "markdown-it";
 import marked from "marked";
 import { codemirror } from "vue-codemirror";
 import CodeMirror from "codemirror";
-import "codemirror/mode/markdown/markdown.js";
+import "codemirror/mode/gfm/gfm.js";
+import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/python/python.js";
 import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/anyword-hint.js";
 
@@ -84,110 +87,75 @@ CodeMirror.hint.javascript = function(editor, options) {
   return result;
 };
 
-const md = markdownIt({
-  langPrefix: "language-",
-  html: true,
-  linkify: true,
-  typographer: true,
-  quotes: "“”‘’",
-  highlight: function(str, lang) {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return hljs.highlight(lang, str).value;
-      } catch (__) {
-        return str;
-      }
-    }
-
-    return "";
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: true,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false,
+  highlight: function(code) {
+    return hljs.highlightAuto(code).value;
   }
 });
 
 export default {
-  name: "TodoItem",
+  name: "TodoMarkdownNote",
   props: {
-    todo: {
-      type: Object,
+    todoId: {
+      type: String,
       required: true
     },
-    focusedItemIndex: {
-      type: Number,
-      required: true
+    tagKey: {
+      type: String
+    },
+    todoMarkdown: {
+      type: String,
+      default: ""
     }
   },
   components: {
     codemirror
   },
   computed: {
-    markedTitle: function() {
-      return md.render(this.title);
-    },
     compiledDetail: function() {
-      marked.setOptions({
-        renderer: new marked.Renderer(),
-        gfm: true,
-        tables: true,
-        breaks: true,
-        pedantic: false,
-        sanitize: true,
-        smartLists: true,
-        smartypants: false,
-        highlight: function(code) {
-          return hljs.highlightAuto(code).value;
-        }
-      });
-      return marked(this.detail);
+      return marked(this.editableMarkdown);
     },
     detailLinesCount: function() {
-      return this.detail.split("\n").length;
+      return this.editableMarkdown.split("\n").length;
     },
     codemirror() {
       return this.$refs.myCm.codemirror;
     },
-    computedTabIndex() {
-      return this.id === "0" ? "0" : "-1";
-    },
-    isFocused() {
-      return this.id === this.focusedItemIndex;
+    sortedTags() {
+      if (!this.tagKey) {
+        return this.tags;
+      }
+
+      return [
+        { key: this.tagKey },
+        ...this.tags.filter(tag => tag.key !== this.tagKey)
+      ];
     }
   },
-  mounted: function() {
-    if (this.id === this.focusedItemIndex) {
-      this.$el.focus();
+  watch: {
+    todoMarkdown: function() {
+      this.editableMarkdown = this.todoMarkdown;
     }
   },
   methods: {
-    toggleCompleted: function() {
-      this.completed = !this.completed;
-      this.$emit("statusChanged", this.id, this.completed);
-    },
     openEdit: function() {
       this.editDetail = true;
     },
     addNewLine: function() {
-      this.$refs.detailEditor.rows = this.detail.split("\n").length + 1;
+      this.$refs.detailEditor.rows =
+        this.editableMarkdown.split("\n").length + 1;
     },
     onEditBlur: function() {
-      this.saveDetail();
+      this.$emit("detailEditDone", this.todoId, this.editableMarkdown);
       this.editDetail = false;
-    },
-    saveDetail: function() {
-      this.$emit("detailEditDone", this.id, this.detail);
-    },
-    blurCodeMirror: function() {
-      this.onEditBlur();
-      this.$refs.todoItem.focus();
-    },
-    todoKeyup: function(e) {
-      if (this.editDetail) {
-        return;
-      }
-
-      if (e.code === "ArrowUp") {
-        this.$emit("todoKeyup", this.id - 1);
-      } else if (e.code === "ArrowDown") {
-        this.$emit("todoKeyup", this.id + 1);
-      }
     },
     triggerHint: function(editor, input) {
       if (input.origin === "paste" || !input.text[0].match(/^[a-z0-9]+$/i)) {
@@ -199,39 +167,54 @@ export default {
         alignWithWord: true
       });
     },
-    onNativeTodoClick: function() {
-      if (!this.editDetail) {
-        this.$emit("todoItemClicked");
-      } else {
-        this.blurCodeMirror();
-      }
+    tagSelected: function(tag) {
+      this.$emit("tagSelected", this.todoId, tag);
     }
   },
   data: function() {
     return {
-      id: this.todo.id,
-      title: this.todo.title,
-      detail: this.todo.detail || "",
-      completed: this.todo.completed,
       editDetail: false,
+      tags: [
+        {
+          key: "yellow"
+        },
+        {
+          key: "green"
+        },
+        {
+          key: "blue"
+        },
+        {
+          key: "grey"
+        },
+        {
+          key: "red"
+        }
+      ],
       cmOptions: {
         tabSize: 4,
         styleActiveLine: true,
         lineNumbers: true,
         line: true,
-        mode: "text/markdown",
         lineWrapping: true,
-        theme: "material",
+        theme: "default",
         hintOptions: {
           completeSingle: false
         },
-        extraKeys: {
-          Esc: this.blurCodeMirror
-        },
-        preview: true,
         autofocus: true,
-        viewportMargin: Infinity
-      }
+        viewportMargin: Infinity,
+        theme: "neat",
+        mode: {
+          name: "text/x-gfm",
+          taskLists: true,
+          strikethrough: true,
+          highlightFormatting: true,
+          gitHubSpice: true,
+          emoji: true,
+          fencedCodeBlockHighlighting: true
+        }
+      },
+      editableMarkdown: this.todoMarkdown
     };
   }
 };

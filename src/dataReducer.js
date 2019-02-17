@@ -1,9 +1,13 @@
+import uid from "uid";
+
 const getTodosOfGroup = (db, groupId) =>
   db.todoIdsInGroup[groupId].map(id => db.todoById[id]);
 
 const getGroups = db => db.groupIds.map(id => db.groupById[id]);
 
-const getTodo = (db, todoId) => db.todoById[todoId];
+const getTodo = (db, todoId) => {
+  return db.todoById[todoId];
+};
 
 const todosInGroupAppended = (todoIdsInGroup, groupId, todoId) => ({
   ...todoIdsInGroup,
@@ -11,14 +15,13 @@ const todosInGroupAppended = (todoIdsInGroup, groupId, todoId) => ({
 });
 
 const groupAdded = db => {
-  const latestGroupId = addedGroupLatestId(db);
+  const latestGroupId = uid();
   const groupById = entityPatched(db.groupById, latestGroupId, {
     id: latestGroupId
   });
 
   return {
     ...db,
-    latestGroupId,
     groupById,
     groupIds: [...db.groupIds, latestGroupId],
     todoIdsInGroup: {
@@ -45,7 +48,8 @@ const entityPatched = (dataObject, entityId, patchedData) => ({
   ...dataObject,
   [entityId]: {
     ...dataObject[entityId],
-    ...patchedData
+    ...patchedData,
+    id: entityId
   }
 });
 
@@ -68,11 +72,8 @@ const todoPositionUpdated = (db, groupId, sourceIndex, destIndex) => {
   return db;
 };
 
-const addedTodoLatestId = db => db.latestTodoId + 1;
-const addedGroupLatestId = db => db.latestGroupId + 1;
-
 const todoAdded = (db, groupId, todo) => {
-  const latestTodoId = addedTodoLatestId(db);
+  const latestTodoId = uid();
   const newTodoGroup = todosInGroupAppended(
     db.todoIdsInGroup,
     groupId,
@@ -86,7 +87,6 @@ const todoAdded = (db, groupId, todo) => {
 
   return {
     ...db,
-    latestTodoId,
     todoIdsInGroup: newTodoGroup,
     todoById: newTodoDetail
   };
@@ -98,7 +98,7 @@ const todoPatched = (db, todoId, todo) => {
 };
 
 const groupPatched = (db, groupId, group) => {
-  db.todoById = entityPatched(db.todoById, groupId, group);
+  db.groupById = entityPatched(db.groupById, groupId, group);
   return db;
 };
 
@@ -120,8 +120,6 @@ const groupPatched = (db, groupId, group) => {
 // - groupById                - a group
 //                                + name
 // - groupIds
-// - latestTodoId
-// - latestGroupId
 
 // APIs:
 // - todoAdded:               (db, groupId, todo) => db                     --> add todo to a group (todo title known beforehand)

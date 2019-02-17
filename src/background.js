@@ -19,7 +19,8 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1200,
     height: 800,
-    minWidth: 300,
+    minWidth: 1100,
+    minHeight: 700,
     titleBarStyle: "hiddenInset",
     frame: false
     // titleBarStyle: "customButtonsOnHover",
@@ -30,7 +31,7 @@ function createWindow() {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    // if (!process.env.IS_TEST) win.webContents.openDevTools();
+    win.webContents.openDevTools();
   } else {
     createProtocol("app");
     // Load the index.html when not in development
@@ -72,6 +73,18 @@ app.on("ready", async () => {
 
 ipcMain.on("quit-app", (evt, arg) => {
   app.quit();
+});
+
+ipcMain.on("minimize-app", e => {
+  win.minimize();
+});
+
+ipcMain.on("maximize-app", e => {
+  if (win.isMaximized()) {
+    win.unmaximize();
+  } else {
+    win.maximize();
+  }
 });
 
 // Exit cleanly on request from parent process in development mode.

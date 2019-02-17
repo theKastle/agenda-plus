@@ -14,8 +14,10 @@
     "highlight.js": "^9.14.2",
     "markdown-it": "^8.4.2",
     "marked": "^0.6.0",
+    "uid": "0.0.2",
     "vue": "^2.5.21",
     "vue-codemirror": "^4.0.6",
+    "vue-draggable-resizable": "^2.0.0-rc1",
     "vue-markdown": "^2.2.4",
     "vue-smooth-dnd": "^0.2.8",
     "vuedraggable": "^2.17.0"
@@ -26,13 +28,14 @@
     "@vue/cli-service": "^3.3.0",
     "babel-eslint": "^10.0.1",
     "electron": "^4.0.4",
+    "electron-builder": "^20.38.5",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.11.0",
     "postcss-import": "^12.0.1",
     "sass-loader": "^7.1.0",
     "tailwindcss": "^0.7.4",
-    "vue-cli-plugin-electron-builder": "^1.0.0-rc.10",
+    "vue-cli-plugin-electron-builder": "^1.0.1",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {

@@ -1,12 +1,14 @@
 <template>
-  <div class="flex w-full flex-wrap justify-start px-2 pb-10">
+  <div class="flex w-full flex-wrap justify-start pb-10">
     <Container v-model="todos" @drop="onDrop" class="w-full flex-wrap">
       <Draggable v-for="todo in todos" :key="`${todo.id}`" class="w-full">
         <TodoItem
           :todo="todo"
+          :currentSelectedTodoId="currentSelectedTodoId"
           @statusChanged="statusChanged"
           @trashClicked="trashClicked"
           @todoTitleEdited="saveTodo"
+          @todoSelected="todoSelected"
         />
       </Draggable>
     </Container>
@@ -19,8 +21,11 @@ import { Container, Draggable } from "vue-smooth-dnd";
 
 export default {
   name: "TodoList",
-  props: ["todos"],
+  props: ["todos", "currentSelectedTodoId"],
   methods: {
+    todoSelected: function(id) {
+      this.$emit("todoSelected", id);
+    },
     statusChanged: function(id, status) {
       this.$emit("statusChanged", id, status);
     },
